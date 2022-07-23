@@ -11,6 +11,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommend
 # core tools
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends \
     curl \
+    ssh \
     gnupg \
     unzip \
     iputils-ping \
@@ -31,7 +32,8 @@ WORKDIR /scripts
 
 # Install SQL Tools: SQLPackage and sqlcmd
 RUN bash ./mssql/installSQLtools.sh \
-     && apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts
+    && apt-get clean -y \
+    && rm -rf /var/lib/apt/lists/* /tmp/library-scripts
 
 # [Optional] Uncomment this section to install additional OS packages.
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
@@ -44,4 +46,5 @@ ENV TARGETARCH=linux-x64
 
 WORKDIR /repos
 
-ENTRYPOINT [ "tail", "-f", "/dev/null" ]
+#ENTRYPOINT [ "tail", "-f", "/dev/null" ]
+CMD ["service", "ssh", "start", "-D"]
