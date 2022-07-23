@@ -1,15 +1,15 @@
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 
+# package manager
 RUN DEBIAN_FRONTEND=noninteractive apt-get update
 RUN DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
-
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends \
     apt-transport-https \
     apt-utils \
     ca-certificates 
 
+# core tools
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends \
-    coreutils \
     curl \
     gnupg \
     unzip \
@@ -17,6 +17,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommend
     lsb-release \
     software-properties-common
 
+# dev tools
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends \
     git \
     docker.io
@@ -42,3 +43,5 @@ RUN bash ./mssql/installSQLtools.sh \
 ENV TARGETARCH=linux-x64
 
 WORKDIR /repos
+
+ENTRYPOINT [ "tail", "-f", "/dev/null" ]
