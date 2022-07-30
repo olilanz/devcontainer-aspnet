@@ -11,12 +11,20 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommend
 # core tools
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends \
     curl \
-    ssh \
     gnupg \
     unzip \
     iputils-ping \
     lsb-release \
     software-properties-common
+
+# SSH for VSCode to connect
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -qq \
+    ssh 
+
+# Incidentally creates /run/sshd
+RUN service ssh start
+
+RUN passwd -d root
 
 # dev tools
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends \
@@ -46,5 +54,5 @@ ENV TARGETARCH=linux-x64
 
 WORKDIR /repos
 
-#ENTRYPOINT [ "tail", "-f", "/dev/null" ]
-CMD ["service", "ssh", "start", "-D"]
+# Run the service in the foreground when starting the container
+CMD ["/usr/sbin/sshd", "-D"]
