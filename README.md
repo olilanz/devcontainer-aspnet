@@ -5,6 +5,8 @@ Experimental.
 
 Usage:
 
-map port 22
-map /root/.ssh
-map /repos
+```bash
+# map port 22
+# map /root/.ssh
+# map /repos
+```
